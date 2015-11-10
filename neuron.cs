@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Perception
+namespace Perceptron
 {
     public partial class Form1 : Form
     {
@@ -35,16 +35,17 @@ namespace Perception
             public Neuron(double[] _x)
             {
                 x = _x;
+                w = new double[_x.Length];
                 for (int i = 0; i < _x.Length; i++)
                 {
                     w[i] = r.Next(0, 101) / 100;
                 }
             }
 
+            //ispravljanje vektora tezina
             double[] ucenje(SekvencaUcenja[] S, int trenutni, int t, double [] w)
             {
-                if (trenutni == 0) return w;
-                else if (trenutni <= t)
+                if (trenutni <= t)
                 {
                     double[] w1 = new double[w.Length];
                     double[] pom = new double[w.Length];
@@ -76,6 +77,17 @@ namespace Perception
                 else return w;    
             }
 
+
+            //output neurona za neki ulaz x
+            public double izlaz(double[] x)
+            {
+                double[] pom = new double[x.Length];
+                pom = pomnoziNizove(x, w);
+                double sum = 0;
+                for (int i = 0; i < x.Length; i++)
+                    sum += pom[i];
+                return sum;
+            }
 
 
             double[] pomnoziNizove(double[] a, double[] b)
