@@ -30,7 +30,8 @@ public:
        {
                w = vector<double>(n);
                for(int i = 0; i < n; i++)
-                       w[i] = 0.0;
+                       w[i] = 1.0;
+               w[0] = 0.0;
        }
        
        //aktivaciona funkcija output neurona
@@ -57,7 +58,7 @@ Perceptron hidden[5] =
      Perceptron(2),
      Perceptron(2)
 };
-Perceptron output(2);
+Perceptron output(5);
 
 
 void uci(vector<vector<double> > x, vector<int> y)
@@ -71,14 +72,15 @@ void uci(vector<vector<double> > x, vector<int> y)
      {
              //izracunavanje rezultata svih neurona
              //vektor koji cuva rezultate svih perceptrona
+             
              vector<double> z =  vector<double>(5);
              for(int i = 0; i < 5; i++)
              {
                 double a = hidden[i].exp_sigmoid(x[br]);
+                printf("%.2llf\n", a);
                 z.push_back(a);
              }
              double y_output = output.linear_sigmoid(z);
-             
              
              //racunanje ukupne greske
              double delta_y =y_output - y[br];
@@ -94,15 +96,11 @@ void uci(vector<vector<double> > x, vector<int> y)
              //menjanje vrednost svih tezina
              for(int j = 0; j < 5; j++)
              {
-                 output.w[j] += ITA * trenutno;
+                 output.w[j] -= ITA * trenutno;
                  for(int i = 0; i < hidden[0].w.size(); i++)
-                     hidden[j].w[i] += ITA * trenutno; 
+                     hidden[j].w[i] -= ITA * trenutno; 
              }
      }
-     
-     
-     
-     
      
      
      
@@ -126,17 +124,19 @@ int main()
             
 
             
-            double x1p = x1 + (rand()%100 - 50)/ 1000;
-            double x2p = x2 + (rand()%100 - 50)/ 1000;
-            
+            double x1p = (double)x1 + (double)(rand()%10) / 100;
+            double x2p = (double)x2 + (double)(rand()%10) / 100;
+
             vector<double> pom = vector<double>(2);
-            pom.push_back(x1p);
-            pom.push_back(x2p);
+            pom[0] = x1p;
+            pom[1] = x2p;
             x.push_back(pom);
+            
             
             y.push_back(yp);
             
     }
+    
     uci(x, y);
     
     
@@ -144,7 +144,7 @@ int main()
     //racunanje rezultata
      vector<double> test = vector<double>(2);
      test.push_back(1.0);
-     test.push_back(1.0);
+     test.push_back(0.0);
      vector<double> z =  vector<double>(5);
      for(int i = 0; i < 5; i++)
      {
@@ -152,7 +152,7 @@ int main()
          z.push_back(a);
      }
      double y_output = output.linear_sigmoid(z);
-     printf("%lld", y_output);
+     printf("%llf", y_output);
     
     system("PAUSE");
     return EXIT_SUCCESS;
