@@ -15,7 +15,7 @@ private:
         double skalarni_proizvod(vector<double> a, vector<double> b)
         {
                double suma = 0.0;
-               for(int i = 1; i < a.size(); i++)
+               for(int i = 0; i < a.size(); i++)
                        suma+=a[i] * b[i];
                return suma;      
         }
